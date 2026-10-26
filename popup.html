@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root { --bg:#141118; --card:#1e1a24; --line:#2e2836; --text:#eee8f4; --dim:#9a90a8; --gold:#ffcf4a; }
+  * { box-sizing: border-box; }
+  body { margin:0; width:320px; background:var(--bg); color:var(--text); font:13px/1.45 system-ui, -apple-system, Segoe UI, sans-serif; }
+  header { padding:14px 16px 10px; display:flex; align-items:center; gap:10px; border-bottom:1px solid var(--line); }
+  header img { width:28px; height:28px; }
+  header h1 { font-size:15px; margin:0; letter-spacing:.2px; }
+  header p { margin:0; color:var(--dim); font-size:11.5px; }
+  section { padding:10px 16px; border-bottom:1px solid var(--line); }
+  .row { display:flex; align-items:center; justify-content:space-between; padding:6px 0; gap:12px; }
+  .row small { display:block; color:var(--dim); font-size:11.5px; }
+  .switch { position:relative; width:36px; height:20px; flex:none; }
+  .switch input { opacity:0; width:0; height:0; }
+  .slider { position:absolute; inset:0; background:#3a3344; border-radius:20px; cursor:pointer; transition:.15s; }
+  .slider:before { content:""; position:absolute; width:14px; height:14px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.15s; }
+  input:checked + .slider { background:var(--gold); }
+  input:checked + .slider:before { transform:translateX(16px); background:#1a1520; }
+  select, button { font:inherit; color:var(--text); background:var(--card); border:1px solid var(--line); border-radius:7px; padding:5px 9px; cursor:pointer; }
+  button:hover, select:hover { border-color:#4a4256; }
+  .meme { display:flex; gap:10px; align-items:center; margin-top:4px; }
+  .meme img { width:64px; height:48px; object-fit:cover; border-radius:5px; border:1px solid var(--line); background:#000; }
+  .meme .ph { width:64px; height:48px; border-radius:5px; border:1px dashed var(--line); display:grid; place-items:center; color:var(--dim); font-size:10px; text-align:center; }
+  .hint { color:var(--dim); font-size:11.5px; padding:10px 16px 14px; }
+  kbd { background:var(--card); border:1px solid var(--line); border-radius:4px; padding:0 4px; font-size:11px; }
+  .note { color:var(--gold); font-size:11.5px; margin-top:6px; display:none; }
+</style>
+</head>
+<body>
+<header>
+  <img src="icons/icon48.png" alt="">
+  <div><h1>Snap &amp; Cinema FX</h1><p>Effects for your camera in any web call</p></div>
+</header>
+
+<section>
+  <div class="row"><div>Effects on<small>Turn off to send your normal camera</small></div>
+    <label class="switch"><input type="checkbox" id="enabled"><span class="slider"></span></label></div>
+  <div class="note" id="rejoin">Turn your camera off and on again in the call (or reload the tab) for this to apply.</div>
+</section>
+
+<section>
+  <div class="row"><div>Snap to vanish<small>Snap again to come back</small></div>
+    <label class="switch"><input type="checkbox" id="snap"><span class="slider"></span></label></div>
+  <div class="row"><div>Double snap → cash rain<small>Adds a short pause before a single snap acts</small></div>
+    <label class="switch"><input type="checkbox" id="cash"><span class="slider"></span></label></div>
+  <div class="row"><div>Snap sensitivity</div>
+    <select id="sensitivity"><option value="low">Low</option><option value="normal">Normal</option><option value="high">High</option></select></div>
+</section>
+
+<section>
+  <div class="row"><div>Both hands up → Absolute Cinema<small>Your face placed into the meme, live</small></div>
+    <label class="switch"><input type="checkbox" id="cinema"><span class="slider"></span></label></div>
+  <div class="row" style="align-items:flex-start"><div>Cinema picture<small>Built in — change it if you like</small>
+    <div class="meme"><div id="memePrev"></div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <button id="pick">Change…</button>
+        <button id="clear">Use default</button>
+      </div></div>
+    <input type="file" id="file" accept="image/*" hidden></div></div>
+</section>
+
+<section>
+  <div class="row"><div>Facepalm → Office meme<small>Hand over your eyes; meme at 50% over you</small></div>
+    <label class="switch"><input type="checkbox" id="facepalm"><span class="slider"></span></label></div>
+  <div class="row" style="align-items:flex-start"><div>Facepalm picture<small>Built in — change it if you like</small>
+    <div class="meme"><div id="palmPrev"></div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <button id="palmPick">Change…</button>
+        <button id="palmClear">Use default</button>
+      </div></div>
+    <input type="file" id="palmFile" accept="image/*" hidden></div></div>
+</section>
+
+<section>
+  <div class="row"><div>Blur my background<small>Use this instead of Meet's blur — keeps effects sharp</small></div>
+    <label class="switch"><input type="checkbox" id="bgBlur"><span class="slider"></span></label></div>
+  <div class="row"><div>Fix backwards self-view<small>Your preview shows what others see, so text reads correctly</small></div>
+    <label class="switch"><input type="checkbox" id="unmirror"><span class="slider"></span></label></div>
+  <div class="row"><div>Show tracking (debug)<small>Others will see this too</small></div>
+    <label class="switch"><input type="checkbox" id="debug"><span class="slider"></span></label></div>
+</section>
+
+<div class="hint">
+  Keyboard backups while in the call tab: <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> snap,
+  <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd> cinema, <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> cash rain, <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd> facepalm.<br>
+  Tip: lean out of frame for 2 seconds after your camera turns on, so it learns the room behind you.
+</div>
+<script src="popup.js"></script>
+</body>
+</html>
