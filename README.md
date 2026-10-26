@@ -39,7 +39,6 @@ Tips: use good lighting and keep your hand clearly in view. Lean out of frame fo
 
 ## Credits
 
-- Original snap idea: [@rajhere.in](https://www.instagram.com/rajhere.in/)
 - Tracking: [Google MediaPipe](https://github.com/google-ai-edge/mediapipe) (Apache 2.0)
 
 ## License
